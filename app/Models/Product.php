@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+    const AVAILABLE_PRODUCT = 1;
+    const UNAVAILABLE_PRODUCT = 2;
 
     protected $fillable = [
         'name',
         'description',
         'quantity',
-        'status',
+        'status',//available //unavailable
         'image',
         'seller_id'
     ];
@@ -25,5 +27,15 @@ class Product extends Model
     public function seller()
     {
         return $this->belongsTo(Seller::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function isAvailable()
+    {
+        return $this->status == Product::AVAILABLE_PRODUCT;
     }
 }
