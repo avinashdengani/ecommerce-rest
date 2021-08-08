@@ -28,7 +28,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'email_verified_at',
         'verified',
         'verification_token',
         'admin'
@@ -61,7 +60,7 @@ class User extends Authenticatable
     {
         return $this->admin == self::ADMIN_USER;
     }
-    public function generateVerificationCode()
+    public static function generateVerificationCode()
     {
         return Str::random(40);
     }
