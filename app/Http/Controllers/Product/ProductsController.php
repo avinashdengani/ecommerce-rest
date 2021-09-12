@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Product;
 
+use App\Http\Controllers\ApiController;
 use App\Models\Product;
 use Facade\FlareClient\Api;
 use Illuminate\Http\Request;
