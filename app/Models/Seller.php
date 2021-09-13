@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Scopes\SellerScope;
+use App\Transformers\SellerTransformer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +12,8 @@ class Seller extends User
     use HasFactory;
 
     protected $table = 'users';
+
+    public string $transformer = SellerTransformer::class;
 
     public function __construct()
     {
