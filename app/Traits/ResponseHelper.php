@@ -23,16 +23,26 @@ trait ResponseHelper
 
     protected function showAll(Collection $collection, int $code = 200)
     {
-        return $this->successResponse(['count' => $collection->count(), 'data' => $collection], $code);
+        $transformer = $collection->first()->transformer;
+        $transformerdCollection = $this->transformData($collection, $transformer);
+        return $this->successResponse(['count' => $collection->count(), 'data' => $transformerdCollection['data']], $code);
     }
 
     protected function showOne(Model $model, int $code = 200)
     {
-        return $this->successResponse(['data' => $model], $code);
+        $transformer = $model->transformer;
+        $transformerdData = $this->transformData($model, $transformer);
+        return $this->successResponse($transformerdData, $code);
     }
 
     protected function showMessage(string $message, int $code = 200)
     {
         return $this->successResponse(['data' => $message], $code);
+    }
+
+    protected function transformData($data, string $transformer)
+    {
+        $transformerdData = fractal($data, new $transformer);
+        return $transformerdData->toArray();
     }
 }
