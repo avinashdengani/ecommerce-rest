@@ -5,6 +5,8 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
+use function PHPUnit\Framework\isEmpty;
+
 trait ResponseHelper
 {
     private function successResponse(mixed $data, int $code)
@@ -23,6 +25,9 @@ trait ResponseHelper
 
     protected function showAll(Collection $collection, int $code = 200)
     {
+        if($collection->isEmpty()) {
+            return $this->successResponse(['count' => 0, 'data' => $collection], $code);
+        }
         $transformer = $collection->first()->transformer;
         $transformerdCollection = $this->transformData($collection, $transformer);
         return $this->successResponse(['count' => $collection->count(), 'data' => $transformerdCollection['data']], $code);
