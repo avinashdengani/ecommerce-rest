@@ -30,6 +30,7 @@ trait ResponseHelper
         }
         $transformer = $collection->first()->transformer;
         $collection = $this->sort($collection, $transformer);
+        $collection = $this->filter($collection, $transformer);
 
         $transformerdCollection = $this->transformData($collection, $transformer);
         return $this->successResponse(['count' => $collection->count(), 'data' => $transformerdCollection['data']], $code);
@@ -62,5 +63,23 @@ trait ResponseHelper
         }
 
         return $collection;
+    }
+    private function filter(Collection $collection, string $transformer)
+    {
+        foreach( request()->query() as $filterBy => $value)
+        {
+            if($this->isFilterable($filterBy)) {
+                $actualAttribute = $transformer::getOriginalAttribute($filterBy);
+                if(isset($actualAttribute, $value)) {
+                    $collection = $collection->where($actualAttribute, $value);
+                }
+            }
+        }
+        return $collection;
+    }
+
+    private function isFilterable(string $attribute)
+    {
+        return ! in_array($attribute, ['sort_by']);
     }
 }
