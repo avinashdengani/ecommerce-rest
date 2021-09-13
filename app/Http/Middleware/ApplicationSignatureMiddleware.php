@@ -14,8 +14,10 @@ class ApplicationSignatureMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, string $header = 'X-Name')
     {
-        return $next($request);
+        $response = $next($request);
+        $response->headers->set($header, config('app.name'));
+        return $response;
     }
 }
