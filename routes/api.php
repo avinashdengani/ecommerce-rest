@@ -68,3 +68,5 @@ Route::resource('transactions.sellers', TransactionSellerController::class)->onl
 
 //USER
 Route::resource('users', UsersController::class)->except('create', 'edit');
+Route::get('users/verify/{token}', [UsersController::class, 'verify'])->name('users.verify');
+Route::get('users/{user}/resend-verification-email', [UsersController::class, 'resend'])->name('users.resend');
