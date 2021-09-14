@@ -19,12 +19,11 @@ class CacheResponse
     {
         $url = request()->url();
         $queryParameters = request()->query();
-
+        $method = request()->getMethod();
         ksort($queryParameters);
 
         $queryString = http_build_query($queryParameters);
-
-        $fullUrl = "{$url}?{$queryString}";
+        $fullUrl = "$method:{$url}?{$queryString}";
 
         if(Cache::has($fullUrl)) {
             return Cache::get($fullUrl);

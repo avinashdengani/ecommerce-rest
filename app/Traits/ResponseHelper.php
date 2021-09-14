@@ -116,12 +116,12 @@ trait ResponseHelper
     {
         $url = request()->url();
         $queryParameters = request()->query();
-
+        $method = request()->getMethod();
         ksort($queryParameters);
 
         $queryString = http_build_query($queryParameters);
 
-        $fullUrl = "{$url}?{$queryString}";
+        $fullUrl = "$method:{$url}?{$queryString}";
 
         return Cache::remember($fullUrl, 30, function () use ($data){
             return $data;
