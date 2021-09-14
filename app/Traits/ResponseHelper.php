@@ -5,6 +5,7 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 use function PHPUnit\Framework\isEmpty;
@@ -13,6 +14,7 @@ trait ResponseHelper
 {
     private function successResponse(mixed $data, int $code)
     {
+        $this->cacheResponse($data);
         return response()->json($data, $code);
     }
     protected function reportMultipleErrors(mixed $message, int $code)
@@ -109,4 +111,21 @@ trait ResponseHelper
         $paginator->appends(request()->all());
         return $paginator;
     }
+
+    private function  cacheResponse(mixed $data)
+    {
+        $url = request()->url();
+        $queryParameters = request()->query();
+
+        ksort($queryParameters);
+
+        $queryString = http_build_query($queryParameters);
+
+        $fullUrl = "{$url}?{$queryString}";
+
+        return Cache::remember($fullUrl, 30, function () use ($data){
+            return $data;
+        });
+    }
 }
+
