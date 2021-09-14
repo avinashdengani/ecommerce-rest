@@ -3,7 +3,9 @@
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -32,8 +34,11 @@ trait ResponseHelper
         $collection = $this->sort($collection, $transformer);
         $collection = $this->filter($collection, $transformer);
 
+        $collection = $this->paginate($collection);
+
         $transformerdCollection = $this->transformData($collection, $transformer);
-        return $this->successResponse(['count' => $collection->count(), 'data' => $transformerdCollection['data']], $code);
+        $transformerdCollection['count'] = $collection->count();
+        return $this->successResponse($transformerdCollection, $code);
     }
 
     protected function showOne(Model $model, int $code = 200)
@@ -81,5 +86,27 @@ trait ResponseHelper
     private function isFilterable(string $attribute)
     {
         return ! in_array($attribute, ['sort_by']);
+    }
+
+    private function paginate(Collection $collection)
+    {
+        $rules = [
+            'per_page' => 'integer|min:10|max:100'
+        ];
+
+        Validator::validate(request()->all(), $rules);
+
+        $page = LengthAwarePaginator::resolveCurrentPage();
+        $elementsPerPage = 15;
+
+        if(request()->has('per_page')) {
+            $elementsPerPage = (int)request()->per_page;
+        }
+
+        $results = $collection->slice($elementsPerPage * ($page-1), $elementsPerPage);
+        $paginator = new LengthAwarePaginator($results, $collection->count(), $elementsPerPage, $page, ['path' => LengthAwarePaginator::resolveCurrentPath()]);
+
+        $paginator->appends(request()->all());
+        return $paginator;
     }
 }
