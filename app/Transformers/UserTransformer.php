@@ -41,6 +41,15 @@ class UserTransformer extends TransformerAbstract
             'creationDate' => $user->created_at,
             'lastChangedDate' => $user->updated_at,
             'deletionDate' => $user->deleted_at ?? null,
+
+            //HATEOAS IMPLEMENTATION
+
+            'links' => [
+                [
+                    'rel' => 'self',
+                    'href' => route('users.show', $user->id)
+                ],
+            ],
         ];
     }
 
@@ -54,7 +63,7 @@ class UserTransformer extends TransformerAbstract
             'isAdmin' => 'admin',
             'creationDate' => 'created_at',
             'lastChangedDate' => 'updated_at',
-            'deletionDate' => 'deleted_at'
+            'deletionDate' => 'deleted_at',
         ];
 
         return $attribute[$transformedAttribute] ?? null;

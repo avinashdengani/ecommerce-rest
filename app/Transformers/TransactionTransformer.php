@@ -40,6 +40,31 @@ class TransactionTransformer extends TransformerAbstract
             'creationDate' => $transaction->created_at,
             'lastChangedDate' => $transaction->updated_at,
             'deletionDate' => $transaction->deleted_at ?? null,
+
+            //HATEOAS IMPLEMENTATION
+
+            'links' => [
+                [
+                    'rel' => 'self',
+                    'href' => route('transactions.show', $transaction->id)
+                ],
+                [
+                    'rel' => 'buyer',
+                    'href' => route('buyers.show', $transaction->buyer_id)
+                ],
+                [
+                    'rel' => 'transaction.sellers',
+                    'href' => route('transactions.sellers.index', $transaction->id)
+                ],
+                [
+                    'rel' => 'transaction.categories',
+                    'href' => route('transactions.categories.index', $transaction->id)
+                ],
+                [
+                    'rel' => 'product',
+                    'href' => route('products.index', $transaction->product_id)
+                ],
+            ],
         ];
     }
 

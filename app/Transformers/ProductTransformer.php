@@ -43,6 +43,31 @@ class ProductTransformer extends TransformerAbstract
             'creationDate' => $product->created_at,
             'lastChangedDate' => $product->updated_at,
             'deletionDate' => $product->deleted_at ?? null,
+
+            //HATEOAS IMPLEMENTATION
+
+            'links' => [
+                [
+                    'rel' => 'self',
+                    'href' => route('products.show', $product->id)
+                ],
+                [
+                    'rel' => 'product.buyers',
+                    'href' => route('products.buyers.index', $product->id)
+                ],
+                [
+                    'rel' => 'sellers',
+                    'href' => route('sellers.show', $product->seller_id)
+                ],
+                [
+                    'rel' => 'product.categories',
+                    'href' => route('products.categories.index', $product->id)
+                ],
+                [
+                    'rel' => 'product.transactions',
+                    'href' => route('products.transactions.index', $product->id)
+                ],
+            ],
         ];
     }
 

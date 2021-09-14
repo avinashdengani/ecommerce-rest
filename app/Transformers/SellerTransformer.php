@@ -40,6 +40,35 @@ class SellerTransformer extends TransformerAbstract
             'creationDate' => $seller->created_at,
             'lastChangedDate' => $seller->updated_at,
             'deletionDate' => $seller->deleted_at ?? null,
+
+             //HATEOAS IMPLEMENTATION
+
+             'links' => [
+                [
+                    'rel' => 'self',
+                    'href' => route('sellers.show', $seller->id)
+                ],
+                [
+                    'rel' => 'seller.category',
+                    'href' => route('sellers.categories.index', $seller->id)
+                ],
+                [
+                    'rel' => 'seller.products',
+                    'href' => route('sellers.products.index', $seller->id)
+                ],
+                [
+                    'rel' => 'seller.transactions',
+                    'href' => route('sellers.transactions.index', $seller->id)
+                ],
+                [
+                    'rel' => 'seller.buyers',
+                    'href' => route('sellers.buyers.index', $seller->id)
+                ],
+                [
+                    'rel' => 'user',
+                    'href' => route('users.show', $seller->id)
+                ],
+            ],
         ];
     }
 
