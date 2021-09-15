@@ -43,9 +43,9 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-             CacheResponse::class,
             'signature:X-App-Name',
-            'throttle:api',
+            'throttle:50,1',
+            CacheResponse::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
