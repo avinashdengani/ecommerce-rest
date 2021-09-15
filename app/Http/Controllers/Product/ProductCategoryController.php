@@ -6,10 +6,15 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Transformers\ProductTransformer;
 use Illuminate\Http\Request;
 
 class ProductCategoryController extends ApiController
 {
+    public function __construct()
+    {
+        $this->middleware('transform.input:'. ProductTransformer::class)->only('update');
+    }
     public function index(Product $product)
     {
         $categories = $product->categories;
