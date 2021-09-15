@@ -80,4 +80,18 @@ class CategoryTransformer extends TransformerAbstract
 
         return $attribute[$transformedAttribute] ?? null;
     }
+
+    public static function getTransformedAttribute(string $originalAttribute)
+    {
+        $attribute =  [
+            'id' => 'identifier',
+            'name' => 'title',
+            'description' => 'details',
+            'created_at' => 'creationDate',
+            'updated_at' => 'lastChangedDate',
+            'deleted_at' => 'deletionDate',
+        ];
+
+        return $attribute[$originalAttribute] ?? null;
+    }
 }
