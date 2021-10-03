@@ -64,6 +64,8 @@ class UserTransformer extends TransformerAbstract
             'creationDate' => 'created_at',
             'lastChangedDate' => 'updated_at',
             'deletionDate' => 'deleted_at',
+            'password' => 'password',
+            'password_confirmation' => 'password_confirmation'
         ];
 
         return $attribute[$transformedAttribute] ?? null;
@@ -75,6 +77,7 @@ class UserTransformer extends TransformerAbstract
             'name' => 'name',
             'email' => 'email',
             'password' => 'password',
+            'password_confirmation' => 'password_confirmation',
             'verified' => 'isVerified',
             'admin' => 'isAdmin',
             'created_at' => 'creationDate',
