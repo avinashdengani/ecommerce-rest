@@ -16,6 +16,7 @@ class SellerProductController extends ApiController
     public function __construct()
     {
         $this->middleware('transform.input:'. ProductTransformer::class)->only('store', 'update');
+        $this->middleware('auth:api')->only('index');
     }
     public function index(Seller $seller)
     {

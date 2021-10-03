@@ -16,6 +16,7 @@ class ProductBuyerTransactionController extends ApiController
     public function __construct()
     {
         $this->middleware('transform.input:'. TransactionTransformer::class)->only('store');
+        $this->middleware('auth:api')->only('store');
     }
     public function store(Request $request, Product $product, Buyer $buyer)
     {
