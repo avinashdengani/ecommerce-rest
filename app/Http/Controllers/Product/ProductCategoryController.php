@@ -16,6 +16,9 @@ class ProductCategoryController extends ApiController
         $this->middleware('transform.input:'. ProductTransformer::class)->only('update');
         $this->middleware('client.credentials')->only('index');
         $this->middleware('auth:api')->only('index');
+
+        $this->middleware('can:add-category,product')->only('update');
+        $this->middleware('can:delete-category,product')->only('destroy');
     }
     public function index(Product $product)
     {
