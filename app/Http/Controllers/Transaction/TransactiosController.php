@@ -12,6 +12,7 @@ class TransactiosController extends ApiController
     {
         $this->middleware('auth:api')->only('index', 'show');
         $this->middleware('scope:read-general')->only('show');
+        $this->middleware('can:view,transaction')->only('show');
     }
     public function index()
     {
