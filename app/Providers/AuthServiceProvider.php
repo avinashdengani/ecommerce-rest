@@ -15,6 +15,7 @@ use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\Passport;
+use Illuminate\Auth\Access\Response;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -49,5 +50,11 @@ class AuthServiceProvider extends ServiceProvider
             'manage-product' => 'CRUD for products',
             'read-general' => 'Read general info like categories, products, purchased products, your transactions'
         ]);
+
+        Gate::define('admin', function (User $user) {
+            return $user->isAdmin()
+                        ? Response::allow()
+                        : Response::deny('You must be an administrator.');
+        });
     }
 }
