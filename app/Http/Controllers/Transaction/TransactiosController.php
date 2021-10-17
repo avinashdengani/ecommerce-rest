@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Transaction;
 use App\Http\Controllers\ApiController;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TransactiosController extends ApiController
 {
@@ -16,6 +17,7 @@ class TransactiosController extends ApiController
     }
     public function index()
     {
+        Gate::authorize('admin');
         $transactions = Transaction::all();
         return $this->showAll($transactions);
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\ApiController;
 use App\Models\Seller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class SellersController extends ApiController
 {
@@ -16,6 +17,7 @@ class SellersController extends ApiController
     }
     public function index()
     {
+        Gate::authorize('admin');
         $sellers = Seller::has('products')->get();
         return $this->showAll($sellers);
     }

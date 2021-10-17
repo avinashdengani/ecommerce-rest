@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ProductBuyerController extends ApiController
 {
@@ -15,6 +16,7 @@ class ProductBuyerController extends ApiController
     }
     public function index(Product $product)
     {
+        Gate::authorize('admin');
         $buyers = $product->transactions()
                     ->with('buyer')
                     ->get()

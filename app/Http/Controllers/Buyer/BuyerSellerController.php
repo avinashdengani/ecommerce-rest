@@ -11,6 +11,7 @@ class BuyerSellerController extends ApiController
     public function __construct()
     {
         $this->middleware('auth:api')->only('index');
+        $this->middleware('can:view,buyer')->only('index');
     }
     public function index(Buyer $buyer)
     {
